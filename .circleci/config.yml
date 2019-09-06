@@ -17,6 +17,16 @@ jobs:
       - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
+  scratch-validate:
+    docker:
+      image: node:10.15.3
+    steps:
+      - checkout
+      - run: bash scripts/install-utils.sh
+      - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
+      - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
+      - run: bash scripts/validate.sh "PR$CIRCLE_PR_NUMBER-$CIRCLE_BRANCH"
+
   hold:
     docker:
       - image: alpine
@@ -60,14 +70,9 @@ workflows:
           requires:
             - hold
 
-  # test-auth-uat:
-  #   jobs:
-  #     - test-auth $UAT_ALIAS $UAT_CLIENT_ID $UAT_USER $UAT_URL $KEY_PATH
-
-  # test-auth-stg:
-  #   jobs:
-  #     - test-auth $STG_ALIAS $STG_CLIENT_ID $STG_USER $STG_URL $KEY_PATH
-
-  # test-auth-hub:
-  #   jobs:
-  #     - test-auth $HUB_ALIAS $HUB_CLIENT_ID $HUB_USER $HUB_URL $KEY_PATH
+  feature-pr:
+    jobs:
+      - scratch-validate:
+          filters:
+            branches:
+              only: feature/*
