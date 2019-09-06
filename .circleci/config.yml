@@ -1,0 +1,21 @@
+# v2.1 for Orb Compatibility
+version: 2.1
+jobs:
+  info:
+    docker:
+      - image: node:10.15.3
+    steps:
+      - checkout
+      - run: bash scripts/install-utils.sh
+
+  test-auth:
+    docker:
+      - image: node:10.15.3
+    steps:
+      - checkout
+      - run: echo "A first hello"
+
+workflows:
+  get-info:
+    jobs:
+      - info
