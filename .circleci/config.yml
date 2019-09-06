@@ -2,48 +2,47 @@
 version: 2.1
 
 executors:
-  base:
+  default:
     docker:
       - image: node:10.15.3
+
+commands:
+  hold: # Inject to Workflows for CircleCI "Adhoc" functionality
+    steps:
+      - run:
+        command: echo "Holding for Approval"
+
+jobs:
+  info: # Install and Echo Dependencies
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
 
-  default:
-    docker:
-      - image: node:10.15.3
+  test-auth: # Test JWT Authentication
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
       - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
-commands:
-  hold: # Inject to Workflows for CircleCI "Adhoc" functionality
-    steps:
-      - run:
-        command: echo "*** Holding for Approval"
-
-jobs:
-  info: # Install and Echo Dependencies
-    executor: base
-    steps:
-      - checkout
-      - run: sfdx --version
-
-  test-auth: # Test JWT Authentication
-    executor: default
-    steps:
-      - run: echo "*** Success"
-
   scratch-validate: # Create Scratch Org, Validate, and Destroy Scratch Org
     executor: default
     steps:
+      - checkout
+      - run: bash scripts/install-utils.sh
+      - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
+      - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/validate.sh "PR$CIRCLE_PR_NUMBER-$CIRCLE_BRANCH"
 
   deploy-mdtapi: # Convert force-app to mdt api format and deploy
     executor: default
     steps:
+      - checkout
+      - run: bash scripts/install-utils.sh
+      - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
+      - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/deploy-mdtapi.sh $ALIAS
 
 workflows:
