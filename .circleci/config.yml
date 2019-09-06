@@ -9,6 +9,7 @@ jobs:
       - run: bash scripts/install-utils.sh
       - persist_to_workspace:
           root: node_modules
+          path: node_modules
 
   test-auth:
     docker:
