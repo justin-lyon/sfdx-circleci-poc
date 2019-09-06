@@ -17,7 +17,11 @@ jobs:
       - run: echo "A first hello"
       - run: sfdx --version
 
-  - hold
+  hold:
+    docker:
+      - image: node:10.15.3
+    steps:
+      - checkout
 
 workflows:
   test-auth-int:
