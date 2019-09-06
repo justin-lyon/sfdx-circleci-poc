@@ -1,7 +1,7 @@
 # echo "*** Installing additional dependencies"
 # apk add --update bash jq curl git coreutils
 
-echo "*** Report Prepackaged with the Node Alpine Docker Image"
+echo "*** Report Prepackaged with the Node Docker Image"
 echo "*** node Version"
 node --version
 echo "*** npm Version"

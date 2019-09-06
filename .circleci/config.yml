@@ -1,21 +1,44 @@
 # v2.1 for Orb Compatibility
 version: 2.1
 jobs:
-  info:
+  install:
     docker:
       - image: node:10.15.3
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
+      - persist_to_workspace:
+          root: node_modules
 
   test-auth:
     docker:
       - image: node:10.15.3
     steps:
       - checkout
+      - attach_workspace:
+          at: node_modules
       - run: echo "A first hello"
 
 workflows:
   get-info:
     jobs:
-      - info
+      - install
+  test-auth-int:
+    jobs:
+      - install
+      - test-auth:
+          requires:
+            - install
+          context: INT
+
+  # test-auth-uat:
+  #   jobs:
+  #     - test-auth $UAT_ALIAS $UAT_CLIENT_ID $UAT_USER $UAT_URL $KEY_PATH
+
+  # test-auth-stg:
+  #   jobs:
+  #     - test-auth $STG_ALIAS $STG_CLIENT_ID $STG_USER $STG_URL $KEY_PATH
+
+  # test-auth-hub:
+  #   jobs:
+  #     - test-auth $HUB_ALIAS $HUB_CLIENT_ID $HUB_USER $HUB_URL $KEY_PATH
