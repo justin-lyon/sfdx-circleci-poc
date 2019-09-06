@@ -95,3 +95,39 @@ workflows:
           filters:
             branches:
               only: develop
+
+  release-uat:
+    jobs:
+      - hold:
+        type: approval
+      - deploy-mdtapi:
+          requires:
+            - hold
+          context: UAT
+          filters:
+            branches:
+              only: release/*
+
+  release-stg:
+    jobs:
+      - hold:
+        type: approval
+      - deploy-mdtapi:
+          requires:
+            - hold
+          context: STG
+          filters:
+            branches:
+              only: release/*
+
+  release-prod:
+    jobs:
+      - hold:
+        type: approval
+      - deploy-mdtapi:
+          requires:
+            - hold
+          context: HUB
+          filters:
+            branches:
+              only: master
