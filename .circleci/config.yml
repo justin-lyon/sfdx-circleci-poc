@@ -6,6 +6,12 @@ executors:
     docker:
       - image: node:10.15.3
 
+commands:
+  hold: # Inject to Workflows for CircleCI "Adhoc" functionality
+    steps:
+      - run:
+        command: echo "Holding for Approval"
+
 jobs:
   info: # Install and Echo Dependencies
     executor: default
@@ -39,11 +45,11 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/deploy-mdtapi.sh $ALIAS
 
-  hold: # Inject to Workflows for CircleCI "Adhoc" functionality
-    docker:
-      - image: alpine
-    steps:
-      - echo "Holding for Approval."
+  # hold: # Inject to Workflows for CircleCI "Adhoc" functionality
+  #   docker:
+  #     - image: alpine
+  #   steps:
+  #     - echo "Holding for Approval."
 
 workflows:
   feature-pr:
