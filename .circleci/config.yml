@@ -18,6 +18,8 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
   hold:
+    docker:
+      - image: alpine
     steps:
       - echo "Holding for Approval."
 
