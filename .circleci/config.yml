@@ -22,8 +22,6 @@ workflows:
     jobs:
       - test-auth:
           type: approval
-          requires:
-            - install
           context: INT
 
   # test-auth-uat:
