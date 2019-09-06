@@ -20,8 +20,8 @@ jobs:
   hold:
     docker:
       - image: node:10.15.3
-    steps:
-      - checkout
+    # steps:
+    #   - checkout
 
 workflows:
   test-auth-int:
