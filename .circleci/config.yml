@@ -27,6 +27,16 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/validate.sh "PR$CIRCLE_PR_NUMBER-$CIRCLE_BRANCH"
 
+  deploy-mdtapi:
+    docker:
+      - image: node:10.15.3
+    steps:
+      - checkout
+      - run: bash scripts/install-utils.sh
+      - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
+      - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
+      - run: bash scripts/deploy-mdtapi.sh $ALIAS
+
   hold:
     docker:
       - image: alpine
@@ -73,6 +83,15 @@ workflows:
   feature-pr:
     jobs:
       - scratch-validate:
+          context: HUB
           filters:
             branches:
               only: feature/*
+
+  deploy-int:
+    jobs:
+      - deploy-mdtapi:
+          context: INT
+          filters:
+            branches:
+              only: develop
