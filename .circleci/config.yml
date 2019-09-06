@@ -33,6 +33,33 @@ workflows:
           requires:
             - hold
 
+  test-auth-uat:
+    jobs:
+      - hold:
+          type: approval
+      - test-auth:
+          context: UAT
+          requires:
+            - hold
+
+  test-auth-stg:
+    jobs:
+      - hold:
+          type: approval
+      - test-auth:
+          context: STG
+          requires:
+            - hold
+
+  test-auth-hub:
+    jobs:
+      - hold:
+          type: approval
+      - test-auth:
+          context: HUB
+          requires:
+            - hold
+
   # test-auth-uat:
   #   jobs:
   #     - test-auth $UAT_ALIAS $UAT_CLIENT_ID $UAT_USER $UAT_URL $KEY_PATH
