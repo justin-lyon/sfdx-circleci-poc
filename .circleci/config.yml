@@ -7,17 +7,17 @@ jobs:
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
-      - persist_to_workspace:
-          root: node_modules
-          path: node_modules
+      # - persist_to_workspace:
+      #     root: node_modules
+      #     path: node_modules
 
   test-auth:
     docker:
       - image: node:10.15.3
     steps:
       - checkout
-      - attach_workspace:
-          at: node_modules
+      # - attach_workspace:
+      #     at: node_modules
       - run: echo "A first hello"
 
 workflows:
