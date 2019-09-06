@@ -50,7 +50,7 @@ workflows:
           context: HUB
           filters:
             branches:
-              only: feature/*
+              only: /^feature.*/
 
   deploy-int:
     jobs:
@@ -116,7 +116,7 @@ workflows:
           context: UAT
           filters:
             branches:
-              only: release/*
+              only: /^release.*/
 
   release-stg:
     jobs:
@@ -128,7 +128,7 @@ workflows:
           context: STG
           filters:
             branches:
-              only: release/*
+              only: /^release.*/
 
   release-prod:
     jobs:
