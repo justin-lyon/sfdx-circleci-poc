@@ -44,6 +44,22 @@ jobs:
       - echo "Holding for Approval."
 
 workflows:
+  feature-pr:
+    jobs:
+      - scratch-validate:
+          context: HUB
+          filters:
+            branches:
+              only: feature/*
+
+  deploy-int:
+    jobs:
+      - deploy-mdtapi:
+          context: INT
+          filters:
+            branches:
+              only: develop
+
   get-info:
     jobs:
       - hold:
@@ -88,22 +104,6 @@ workflows:
           context: HUB
           requires:
             - hold
-
-  feature-pr:
-    jobs:
-      - scratch-validate:
-          context: HUB
-          filters:
-            branches:
-              only: feature/*
-
-  deploy-int:
-    jobs:
-      - deploy-mdtapi:
-          context: INT
-          filters:
-            branches:
-              only: develop
 
   release-uat:
     jobs:
