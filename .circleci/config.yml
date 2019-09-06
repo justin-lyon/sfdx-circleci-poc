@@ -1,16 +1,20 @@
 # v2.1 for Orb Compatibility
 version: 2.1
-jobs:
-  info: # Install and Echo Dependencies
+
+executors:
+  default:
     docker:
       - image: node:10.15.3
+
+jobs:
+  info: # Install and Echo Dependencies
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
 
   test-auth: # Test JWT Authentication
-    docker:
-      - image: node:10.15.3
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
@@ -18,8 +22,7 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
   scratch-validate: # Create Scratch Org, Validate, and Destroy Scratch Org
-    docker:
-      - image: node:10.15.3
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
@@ -28,8 +31,7 @@ jobs:
       - run: bash scripts/validate.sh "PR$CIRCLE_PR_NUMBER-$CIRCLE_BRANCH"
 
   deploy-mdtapi: # Convert force-app to mdt api format and deploy
-    docker:
-      - image: node:10.15.3
+    executor: default
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
