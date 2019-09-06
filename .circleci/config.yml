@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run: bash scripts/install-utils.sh
       - run: mkdir keys
-      - run: echo $SERVER_KEY > $KEY_PATH
+      - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
   hold:
