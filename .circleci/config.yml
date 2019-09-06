@@ -30,7 +30,8 @@ workflows:
           type: approval
       - test-auth:
           context: INT
-          requires: hold
+          requires:
+            - hold
 
   # test-auth-uat:
   #   jobs:
