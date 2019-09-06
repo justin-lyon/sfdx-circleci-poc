@@ -1,34 +1,27 @@
 # v2.1 for Orb Compatibility
 version: 2.1
 jobs:
-  install:
+  info:
     docker:
       - image: node:10.15.3
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
-      # - persist_to_workspace:
-      #     root: node_modules
-      #     path: node_modules
 
   test-auth:
     docker:
       - image: node:10.15.3
     steps:
       - checkout
-      # - attach_workspace:
-      #     at: node_modules
+      - run: bash scripts/install-utils.sh
       - run: echo "A first hello"
       - run: sfdx --version
 
 workflows:
-  get-info:
-    jobs:
-      - install
   test-auth-int:
     jobs:
-      - install
       - test-auth:
+          type: approval
           requires:
             - install
           context: INT
