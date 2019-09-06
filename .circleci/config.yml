@@ -1,14 +1,14 @@
 # v2.1 for Orb Compatibility
 version: 2.1
 jobs:
-  info:
+  info: # Install and Echo Dependencies
     docker:
       - image: node:10.15.3
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
 
-  test-auth:
+  test-auth: # Test JWT Authentication
     docker:
       - image: node:10.15.3
     steps:
@@ -17,7 +17,7 @@ jobs:
       - run: bash scripts/decrypt-key.sh $KEY_PASSWORD $PASS_KEY_PATH $KEY_PATH
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
-  scratch-validate:
+  scratch-validate: # Create Scratch Org, Validate, and Destroy Scratch Org
     docker:
       - image: node:10.15.3
     steps:
@@ -27,7 +27,7 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/validate.sh "PR$CIRCLE_PR_NUMBER-$CIRCLE_BRANCH"
 
-  deploy-mdtapi:
+  deploy-mdtapi: # Convert force-app to mdt api format and deploy
     docker:
       - image: node:10.15.3
     steps:
@@ -37,7 +37,7 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/deploy-mdtapi.sh $ALIAS
 
-  hold:
+  hold: # Inject to Workflows for CircleCI "Adhoc" functionality
     docker:
       - image: alpine
     steps:
