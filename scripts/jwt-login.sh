@@ -4,5 +4,6 @@
 # Import functions
 . ./scripts/lib/sfdx.sh
 
+echo "jwt args $@"
 jwt_login $1 $2 $3 $4 $5
 get_info

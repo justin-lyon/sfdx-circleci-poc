@@ -15,13 +15,11 @@ jobs:
       - checkout
       - run: bash scripts/install-utils.sh
       - run: echo "A first hello"
-      - run: sfdx --version
+      - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
 
   hold:
-    docker:
-      - image: node:10.15.3
     steps:
-      - checkout
+      - echo "Holding for Approval."
 
 workflows:
   test-auth-int:
