@@ -44,6 +44,15 @@ jobs:
       - echo "Holding for Approval."
 
 workflows:
+  get-info:
+    jobs:
+      - hold:
+          type: approval
+      - info:
+          context: INT
+          requires:
+            - hold
+
   test-auth-int:
     jobs:
       - hold:
