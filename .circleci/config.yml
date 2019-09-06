@@ -45,14 +45,8 @@ jobs:
       - run: bash scripts/jwt-login.sh $CLIENT_ID $KEY_PATH $USER $ALIAS $INSTANCE_URL
       - run: bash scripts/deploy-mdtapi.sh $ALIAS
 
-  # hold: # Inject to Workflows for CircleCI "Adhoc" functionality
-  #   docker:
-  #     - image: alpine
-  #   steps:
-  #     - echo "Holding for Approval."
-
 workflows:
-  feature-pr:
+  feature-validate:
     jobs:
       - scratch-validate:
           context: HUB
