@@ -19,7 +19,7 @@ jobs:
 
   scratch-validate:
     docker:
-      image: node:10.15.3
+      - image: node:10.15.3
     steps:
       - checkout
       - run: bash scripts/install-utils.sh
